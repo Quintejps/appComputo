@@ -1,0 +1,48 @@
+User Guide
+==========
+
+To start running the server you need to posisionate in the folder of the file in the terminal.
+
+Once your there you run the program whit the command:
+go run main.go
+
+After running the file, you will be able to see the server start to work and the controller begin its process of communication with the workers, if there are any active ones.
+
+To create a new worker you will need a new terminal and run the command:
+./worker --controller <host>:<port> --node-name <node_name> --tags <tag1>,<tag2> \
+	       --image-store-endpoint <host>:<port> --image-store-token <auth-token>
+
+You should be able to see the worker start interacting with the controller by receiving messages from the controller.
+
+To interact with the system as a user you will need to log in using git bash terminal and this command:
+curl -u username:password http://localhost:8080/login 
+
+Here are the accounts registered by default with their user and password:
+user1 --> password: pass1
+user2 --> password: pass2
+user3 --> password: pass3
+
+Once your log, you will recive a TOKEN you're gonna need this to access the other functions of the program. 
+
+If you are already loged and run this command again, the program wil send you a message, and it will not give you your token.
+
+To get the status of the system you will need to run the command:
+curl -H "Authorization: Bearer <ACCESS_TOKEN>" http://localhost:8080/status 
+
+You will need to put your given token in <ACCESS_TOKEN>, after running the command you will recive information about the user and active workers, if there are any active ones.
+
+To get the status of an specific worker you will need the command:
+curl -H "Authorization: Bearer <ACCESS_TOKEN>" http://localhost:8080/status/<worker>
+
+You will need to put your given token in <ACCESS_TOKEN>, after running the command you will recive information about a worker.
+
+To filter an image you will need to run the command:
+curl -F 'data=@path/to/local/image.png' -d 'workload-id=my-filters&filter=grayscale' -H "Authorization: Bearer <ACCESS_TOKEN>" http://localhost:8080/workloads/filter
+
+You will need to put your given token in <ACCESS_TOKEN>, an image path and a workload-id, after running the command you will recive the image with the filter you chose, the image filtered will
+appear in http://localhost:8080/results/. 
+
+To logout you will need to run this command.
+curl -H "Authorization: Bearer <ACCESS_TOKEN>" http://localhost:8080/logout 
+
+You will need to introduce your token, to logout, once you're loged out the token that was given to you will be eliminated, and to get another, you will need to log in again.
